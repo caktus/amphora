@@ -34,7 +34,7 @@ jobs:
         run: |
           git clone https://opendev.org/openstack/octavia -b stable/${{ env.openstack_version }}
           cd octavia/diskimage-create
-          ./diskimage-create.sh
+          ./diskimage-create.sh -g stable/${{ env.openstack_version }}
           sha256sum amphora-x64-haproxy.qcow2 > SHA256SUM
       - name: Release
         uses: softprops/action-gh-release@v1
