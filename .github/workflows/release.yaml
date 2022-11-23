@@ -1,9 +1,5 @@
 on:
   push:
-    # Include 'branches' so tags pushed by GitHub Actions itself will also trigger this action:
-    # https://github.com/orgs/community/discussions/26840
-    branches:
-      - '**'
     # Sequence of patterns matched against refs/tags
     tags:
       - "*" # Any tag
