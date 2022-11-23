@@ -1,0 +1,38 @@
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - "*" # Any tag
+
+name: Upload Release Asset
+
+jobs:
+  # https://github.com/actions/upload-release-asset#example-workflow---upload-a-release-asset
+  build:
+    name: Upload Release Asset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "pip"
+      - name: Install requirements
+        run: |
+          sudo apt -y install debootstrap qemu-utils git kpartx
+          pip install -r requirements.txt
+      - name: Set vars stage 1
+        run: |
+          export TAG=$(echo ${{ github.ref }} | cut -d'/' -f3)
+          echo "tag=$(echo $TAG)"  >> $GITHUB_ENV
+          echo "openstack_version=$(echo $TAG | cut -d'-' -f1)" >> $GITHUB_ENV
+      - name: Build project
+        run: |
+          git clone https://opendev.org/openstack/octavia -b stable/${{ env.openstack_version }}
+          cd octavia/diskimage-create
+          ./diskimage-create.sh
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: octavia/diskimage-create/amphora-x64-haproxy.qcow2
