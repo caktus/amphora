@@ -1,7 +1,7 @@
 name: Create weekly tags for releases
 on:
   schedule:
-    - cron: '0 5 * * 0' # Sunday at 5 AM UTC
+    - cron: '25 5 * * 0' # Sunday at 5:25 AM UTC
     - cron: '*/10 * * * *' # TEST (remove)
 jobs:
   create-tag:
@@ -13,13 +13,13 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y%m%d-%H%M%S')" # Remove time
       - uses: rickstaa/action-create-tag@v1
         with:
-          tag: "xena-${{ date }}"
-          message: "Tag for xena on ${{ date }}"
+          tag: "xena-${{ steps.date.outputs.date }}"
+          message: "Tag for xena on ${{ steps.date.outputs.date }}"
       - uses: rickstaa/action-create-tag@v1
         with:
-          tag: "yoga-${{ date }}"
-          message: "Tag for yoga on ${{ date }}"
+          tag: "yoga-${{ steps.date.outputs.date }}"
+          message: "Tag for yoga on ${{ steps.date.outputs.date }}"
       - uses: rickstaa/action-create-tag@v1
         with:
-          tag: "zed-${{ date }}"
-          message: "Tag for zed on ${{ date }}"
+          tag: "zed-${{ steps.date.outputs.date }}"
+          message: "Tag for zed on ${{ steps.date.outputs.date }}"
