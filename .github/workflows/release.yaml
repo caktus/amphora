@@ -19,7 +19,8 @@ jobs:
           cache: "pip"
       - name: Install requirements
         run: |
-          sudo apt -y install debootstrap qemu-utils git kpartx
+          sudo apt-get update
+          sudo apt-get install -y debootstrap qemu-utils git kpartx
           pip install -r requirements.txt
       - name: Set vars stage 1
         run: |
